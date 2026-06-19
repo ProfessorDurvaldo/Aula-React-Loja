@@ -6,13 +6,11 @@ import SideBar from './components/SideBar.jsx';
 function App() {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false)
-
-  function handleAddToCart(prodcut) {
-    setCartItems([...cartItems, prodcut]);
-    console.log(cartItems)
-  }
-
-  const products = [
+  const [search, setSearch] = useState('')
+  const [inputTitle, setInputTitle] = useState('')
+  const [inputPrice, setInputPrice] = useState('')
+  const [inputImage, setInputImage] = useState('')
+  const [products, setProducts] = useState([
     {
       id: 1,
       title: 'One Piece',
@@ -62,15 +60,33 @@ function App() {
       image:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROrNmZi_1oBxYsl0tcI_eQuEgWWFVZcnyojQ&s',
     },
-  ];
+  ])
+
+  function handleAddToCart(prodcut) {
+    setCartItems([...cartItems, prodcut]);
+    console.log(cartItems)
+  }
+
+  const filtered = products.filter(product => {
+    return product.title.toLowerCase().includes(search.toLowerCase())
+  })
 
   return (
     <>
-      <Navbar cartCount={cartItems.length} openCart={setIsCartOpen} />
+      <Navbar cartCount={cartItems.length} openCart={setIsCartOpen} search={search} setSearch={setSearch} />
       <main className="main-content">
-        <h2>Nossos Produtos</h2>
-        <ProductGrid onAddCart={handleAddToCart} products={products} />
+        <h2>Nossos Animes</h2>
+        <ProductGrid onAddCart={handleAddToCart} products={filtered} />
         {isCartOpen && (<SideBar closeCart={setIsCartOpen} cartItems={cartItems} />)}
+        <form>
+          <h3>Adicionar Anime</h3>
+          <label htmlFor="input-title">Titulo</label>
+          <input type="text" id="input-title" value={inputTitle} onChange={e => {setInputTitle(e.target.value)}}  />
+          <label htmlFor="input-price">Preço</label>
+          <input type="text" id="input-price" value={inputPrice} onChange={e => {setInputPrice(e.target.value)}}  />
+          <label htmlFor="input-image">Imagem</label>
+          <input type="text" id="input-image" value={inputImage} onChange={e => {setInputImage(e.target.value)}}  />
+        </form>
       </main>
     </>
   );

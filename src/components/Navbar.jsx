@@ -1,9 +1,10 @@
-function Navbar(props) {
+function Navbar({search, setSearch, openCart, cartCount}) {
   return (
     <>
       <nav className="navbar">
         <span className="navbar-logo">Loja de Animes</span>
-        <span onClick={() => {props.openCart(true)}} className="navbar-cart">Carinho ({props.cartCount})</span>
+        <input type="text" value={search} onChange={e => {setSearch(e.target.value)}} />
+        <span onClick={() => {openCart(true)}} className="navbar-cart">Carinho ({cartCount})</span>
       </nav>
     </>
   )
